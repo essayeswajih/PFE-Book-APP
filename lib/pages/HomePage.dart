@@ -27,14 +27,25 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
-        title: Text(
-          widget.title,
-          style: const TextStyle(
-            color: Colors.black87,
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Poppins',
-          ),
+        title: Row(
+          children: [
+            Text(
+              widget.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
+              ),
+            ),
+            const Spacer(),
+            const SizedBox(
+              height: 30,
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/YXUjAZj.png'),
+              ),
+            )
+          ],
         ),
       ),
       body: SingleChildScrollView(

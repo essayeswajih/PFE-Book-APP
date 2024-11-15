@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/drawer.dart';
 import '../widgets/miniBookItem.dart'; // Ensure the book item widget is imported correctly.
 import '../widgets/bookItem.dart';
@@ -27,14 +28,23 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
-        title: Text(
-          widget.title,
-          style: const TextStyle(
-            color: Colors.black87,
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Poppins',
-          ),
+        title: Row(
+          children: [
+            Text(
+              widget.title,
+              style: GoogleFonts.roboto(
+                color: Colors.black87,
+                fontSize: 20,
+              )
+            ),
+            const Spacer(),
+            const SizedBox(
+              height: 30,
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/YXUjAZj.png'),
+              ),
+            )
+          ],
         ),
       ),
       body: SingleChildScrollView(
@@ -117,7 +127,7 @@ class _HomepageState extends State<Homepage> {
 
   Widget _buildHorizontalBookList() {
     return SizedBox(
-      height: 120, // Adjust height as needed for horizontal list
+      height: 130, // Adjust height as needed for horizontal list
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: books.length,
