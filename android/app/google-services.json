@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "231649987326",
+    "project_id": "pfe-books-f0500",
+    "storage_bucket": "pfe-books-f0500.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231649987326:android:18b3ced105cd05fa0cf3af",
+        "android_client_info": {
+          "package_name": "com.example.pfe_book"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7O2gz-n8ygerEsUQfg_Yeb6w4_cscMg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

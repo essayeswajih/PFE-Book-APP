@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pfe_book/pages/auth.dart';
 import '../widgets/drawer.dart';
 import '../widgets/miniBookItem.dart'; // Ensure the book item widget is imported correctly.
 import '../widgets/bookItem.dart';
@@ -6,7 +8,10 @@ import '../widgets/bookItem.dart';
 class Homepage extends StatefulWidget {
   final String title;
 
-  const Homepage({super.key, required this.title});
+  Homepage({super.key, required this.title});
+
+  // user
+  final User? user = Auth().currentUser;
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -14,12 +19,12 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final List<Map<String, String>> books = [
-    {"image": "assets/images/2OJ13ts.png", "title": "Book 2"},
-    {"image": "assets/images/6bnnJ0p.png", "title": "Book 3"},
-    {"image": "assets/images/IHhPZTh.png", "title": "Book 4"},
-    {"image": "assets/images/lhkP7JP.png", "title": "Book 5"},
-    {"image": "assets/images/QXFS7iw.png", "title": "Book 6"},
-    {"image": "assets/images/YXUjAZj.png", "title": "Book 7"},
+    {"id": "1", "image": "assets/images/2OJ13ts.png", "title": "Book 1", "author": "Author 1", "description": "Description 1","pdf": "https://drive.google.com/uc?export=download&id=1UYKVMyAJnqDSy-LY6Fr2HcAb-h-oovb0"},
+    {"id": "2", "image": "assets/images/6bnnJ0p.png", "title": "Book 2", "author": "Author 2", "description": "Description 2","pdf": "https://icseindia.org/document/sample.pdf"},
+    {"id": "3", "image": "assets/images/IHhPZTh.png", "title": "Book 3", "author": "Author 3", "description": "Description 3","pdf": "https://www.princexml.com/samples/invoice/invoicesample.pdf"},
+    {"id": "4", "image": "assets/images/lhkP7JP.png", "title": "Book 4", "author": "Author 4", "description": "Description 4","pdf": "https://css4.pub/2017/newsletter/drylab.pdf"},
+    {"id": "5", "image": "assets/images/QXFS7iw.png", "title": "Book 5", "author": "Author 5", "description": "Description 5","pdf": "https://drive.google.com/uc?export=download&id=1UYKVMyAJnqDSy-LY6Fr2HcAb-h-oovb0"},
+    {"id": "6", "image": "assets/images/YXUjAZj.png", "title": "Book 6", "author": "Author 6", "description": "Description 6","pdf": "https://example.com/book1.pdf"},
   ];
 
   @override
@@ -134,7 +139,7 @@ class _HomepageState extends State<Homepage> {
         itemCount: books.length,
         itemBuilder: (context, index) {
           final book = books[index];
-          return miniBuildBookItem(book["image"]!, book["title"]!);
+          return miniBuildBookItem(context, book["image"]!, book["title"]!, book["pdf"]!);
         },
       ),
     );
@@ -166,7 +171,7 @@ class _HomepageState extends State<Homepage> {
                 itemCount: books.length,
                 itemBuilder: (context, index) {
                   final book = books[index];
-                  return buildBookItem(book["image"]!, book["title"]!);
+                  return buildBookItem(context, book["image"]!, book["title"]!, book["pdf"]!);
                 },
               ),
             ],
