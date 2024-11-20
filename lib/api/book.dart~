@@ -1,0 +1,74 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+class BookApi {
+  //Create All Books
+  Future<void> addAllBooks() async {
+    // Get the current user ID
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      print("No user is logged in.");
+      return;
+    }
+
+    final String currentUserId = currentUser.uid;
+
+    // Books data
+    final List<Map<String, dynamic>> books = [
+      {
+        "id": "1",
+        "image": "assets/images/2OJ13ts.png",
+        "title": "Book 1",
+        "author": "Author 1",
+        "description": "Description 1",
+        "pdf": "https://drive.google.com/uc?export=download&id=1UYKVMyAJnqDSy-LY6Fr2HcAb-h-oovb0",
+      },
+      {
+        "id": "3",
+        "image": "assets/images/IHhPZTh.png",
+        "title": "Book 3",
+        "author": "Author 3",
+        "description": "Description 3",
+        "pdf": "https://www.princexml.com/samples/invoice/invoicesample.pdf",
+      },
+      {
+        "id": "4",
+        "image": "assets/images/lhkP7JP.png",
+        "title": "Book 4",
+        "author": "Author 4",
+        "description": "Description 4",
+        "pdf": "https://css4.pub/2017/newsletter/drylab.pdf",
+      },
+      {
+        "id": "5",
+        "image": "assets/images/QXFS7iw.png",
+        "title": "Book 5",
+        "author": "Author 5",
+        "description": "Description 5",
+        "pdf": "https://drive.google.com/uc?export=download&id=1UYKVMyAJnqDSy-LY6Fr2HcAb-h-oovb0",
+      },
+      {
+        "id": "6",
+        "image": "assets/images/YXUjAZj.png",
+        "title": "Book 6",
+        "author": "Author 6",
+        "description": "Description 6",
+        "pdf": "https://example.com/book1.pdf",
+      },
+    ];
+
+    try {
+      for (var book in books) {
+        // Add the current timestamp and user ID to each book
+        book["createdAt"] = Timestamp.now();
+        book["createdBy"] = currentUserId;
+
+        // Save the book to Firestore
+        await FirebaseFirestore.instance.collection('books').doc(book['id']).set(book);
+      }
+      print("All books added successfully!");
+    } catch (e) {
+      print("Error adding books: $e");
+    }
+  }
+}

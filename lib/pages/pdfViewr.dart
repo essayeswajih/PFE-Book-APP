@@ -6,7 +6,7 @@ import 'dart:typed_data';
 class PdfViewer extends StatefulWidget {
   final String url;  // URL of the PDF
 
-  const PdfViewer({required this.url});
+  const PdfViewer({super.key, required this.url});
 
   @override
   _PdfViewerState createState() => _PdfViewerState();
@@ -63,21 +63,30 @@ class _PdfViewerState extends State<PdfViewer> {
     return Scaffold(
       body: _loading
           ? SingleChildScrollView(  // Make the Column scrollable if needed
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 60),
-            const CircularProgressIndicator(),
-            const SizedBox(height: 20),
-            Text(
-              '${(_progress * 100).toStringAsFixed(2)}%', // Display percentage
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 20),
-            LinearProgressIndicator(
-              value: _progress,  // Set progress bar value
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 300),
+              const CircularProgressIndicator(
+                color: Colors.amber,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                '${(_progress * 100).toStringAsFixed(2)}%', // Display percentage
+                style: const TextStyle(fontSize: 20, color: Colors.amber),
+              ),
+              const SizedBox(height: 20),
+              LinearProgressIndicator(
+                value: _progress, // Set progress bar value
+                backgroundColor: Colors.amber.withOpacity(0.3), // Background with transparency
+                color: Colors.amberAccent,
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
+              ),
+            ],
+          ),
         ),
       )
           : PDFView(

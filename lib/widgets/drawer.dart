@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pfe_book/pages/loginPage.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -11,7 +13,7 @@ class MyDrawer extends StatelessWidget {
           Container(
             width: double.infinity,
             color: Colors.amber,
-            padding: const EdgeInsets.only(top: 40.0,bottom: 20),
+            padding: const EdgeInsets.only(top: 40.0, bottom: 20),
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -90,9 +92,15 @@ class MyDrawer extends StatelessWidget {
                 _buildDrawerItem(
                   icon: Icons.logout,
                   text: 'Logout',
-                  onTap: () {
-                    // Navigate to login page
-                    Navigator.pushNamed(context, '/login');
+                  onTap: () async {
+                    // Sign the user out
+                    await FirebaseAuth.instance.signOut();
+
+                    // Navigate to the login screen
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  const LoginPage()),
+                    );
                   },
                 ),
               ],

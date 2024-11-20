@@ -1,29 +1,67 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pfe_book/api/book.dart';
 import '../widgets/drawer.dart';
-import '../widgets/miniBookItem.dart'; // Ensure the book item widget is imported correctly.
+import '../widgets/miniBookItem.dart';
 import '../widgets/bookItem.dart';
+import 'loginPage.dart'; // Assuming you have a LoginPage
 
 class Homepage extends StatefulWidget {
   final String title;
 
-  const Homepage({super.key, required this.title});
-
-  // user
-  final User? user = ;
+  Homepage({super.key, required this.title});
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  final List<Map<String, String>> books = [
-    {"id": "1", "image": "assets/images/2OJ13ts.png", "title": "Book 1", "author": "Author 1", "description": "Description 1","pdf": "https://drive.google.com/uc?export=download&id=1UYKVMyAJnqDSy-LY6Fr2HcAb-h-oovb0"},
-    {"id": "2", "image": "assets/images/6bnnJ0p.png", "title": "Book 2", "author": "Author 2", "description": "Description 2","pdf": "https://icseindia.org/document/sample.pdf"},
-    {"id": "3", "image": "assets/images/IHhPZTh.png", "title": "Book 3", "author": "Author 3", "description": "Description 3","pdf": "https://www.princexml.com/samples/invoice/invoicesample.pdf"},
-    {"id": "4", "image": "assets/images/lhkP7JP.png", "title": "Book 4", "author": "Author 4", "description": "Description 4","pdf": "https://css4.pub/2017/newsletter/drylab.pdf"},
-    {"id": "5", "image": "assets/images/QXFS7iw.png", "title": "Book 5", "author": "Author 5", "description": "Description 5","pdf": "https://drive.google.com/uc?export=download&id=1UYKVMyAJnqDSy-LY6Fr2HcAb-h-oovb0"},
-    {"id": "6", "image": "assets/images/YXUjAZj.png", "title": "Book 6", "author": "Author 6", "description": "Description 6","pdf": "https://example.com/book1.pdf"},
-  ];
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late BookApi bookApi;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = "";
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    bookApi = BookApi();
+    _searchController.addListener(_onSearchChanged);
+
+    // Listen for changes in authentication state
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        // If the user is logged out, navigate to the login screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),  // Replace with your login page
+        );
+      }
+    });
+  }
+
+  // Called whenever search query changes
+  void _onSearchChanged() {
+    if (_searchController.text != _searchQuery) {
+      setState(() {
+        _searchQuery = _searchController.text;
+        _isLoading = true;  // Show loading indicator when search query changes
+      });
+
+      // Simulate a delay to mimic a real search operation (e.g., fetching from Firestore)
+        setState(() {
+          _isLoading = false;  // Hide loading indicator after delay
+        });
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,19 +89,53 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildSearchBar(),
-            const SizedBox(height: 30),
-            _buildNewsSection(),
-            const SizedBox(height: 30),
-            _buildVerticalBookList(),
-          ],
-        ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _fetchBooks(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting && !_isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error loading books'));
+          }
+
+          final books = snapshot.data ?? [];
+          final filteredBooks = books
+              .where((book) => book['title']
+              .toLowerCase()
+              .contains(_searchQuery.toLowerCase()))
+              .toList();
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildSearchBar(),
+                const SizedBox(height: 30),
+                _buildNewsSection(filteredBooks),
+                const SizedBox(height: 30),
+                _buildVerticalBookList(filteredBooks),
+              ],
+            ),
+          );
+        },
       ),
       drawer: const MyDrawer(),
     );
+  }
+
+  // Fetch books from Firestore using the BookApi
+  Future<List<Map<String, dynamic>>> _fetchBooks() async {
+    try {
+      // Assuming the API is adding books to Firestore
+      await bookApi.addAllBooks();
+
+      // Fetch books from Firestore
+      final snapshot = await _firestore.collection('books').get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      print("Error fetching books: $e");
+      return [];
+    }
   }
 
   Widget _buildSearchBar() {
@@ -83,23 +155,33 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         children: [
           TextField(
+            controller: _searchController,
             decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50))
-              ),
+              border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
               labelText: 'Search',
+              suffixIcon: _searchQuery.isEmpty
+                  ? const Icon(Icons.search)
+                  : IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _searchController.clear();
+                  _onSearchChanged(); // Reset search query
+                },
+              ),
             ),
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
         ],
       ),
     );
   }
 
-  Widget _buildNewsSection() {
+
+  Widget _buildNewsSection(List<Map<String, dynamic>> books) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -122,59 +204,59 @@ class _HomepageState extends State<Homepage> {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 10),
-            _buildHorizontalBookList(),
+            _buildHorizontalBookList(books),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHorizontalBookList() {
+  Widget _buildHorizontalBookList(List<Map<String, dynamic>> books) {
     return SizedBox(
-      height: 130, // Adjust height as needed for horizontal list
+      height: 130,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: books.length,
         itemBuilder: (context, index) {
           final book = books[index];
-          return miniBuildBookItem(context, book["image"]!, book["title"]!, book["pdf"]!);
+          return miniBuildBookItem(context, book["image"] ?? "", book["title"] ?? "", book["pdf"] ?? "");
         },
       ),
     );
   }
 
-  Widget _buildVerticalBookList() {
+  Widget _buildVerticalBookList(List<Map<String, dynamic>> books) {
     return Container(
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
-          ),
+      decoration: const BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 17.0,top:15, bottom: 20,right: 17),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  "All Books",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 17.0, top: 15, bottom: 20, right: 17),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                "All Books",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(), // Disable inner scrolling
-                shrinkWrap: true, // Allows ListView to work inside a Column
-                itemCount: books.length,
-                itemBuilder: (context, index) {
-                  final book = books[index];
-                  return buildBookItem(context, book["image"]!, book["title"]!, book["pdf"]!);
-                },
-              ),
-            ],
-          ),
+            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: books.length,
+              itemBuilder: (context, index) {
+                final book = books[index];
+                return buildBookItem(context, book["image"] ?? "", book["title"] ?? "", book["pdf"] ?? "");
+              },
+            ),
+          ],
         ),
+      ),
     );
   }
 }
