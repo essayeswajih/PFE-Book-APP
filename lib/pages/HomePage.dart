@@ -9,7 +9,6 @@ import 'loginPage.dart'; // Assuming you have a LoginPage
 
 class Homepage extends StatefulWidget {
   final String title;
-
   Homepage({super.key, required this.title});
 
   @override
@@ -122,6 +121,14 @@ class _HomepageState extends State<Homepage> {
         },
       ),
       drawer: const MyDrawer(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amber,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          // Add a new book
+          _showAddBookDialog();
+        },
+      )
     );
   }
 
@@ -259,6 +266,140 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
+    );
+  }
+  void _showAddBookDialog() {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController _titleController = TextEditingController();
+    final TextEditingController _authorController = TextEditingController();
+    final TextEditingController _imageUrlController = TextEditingController();
+    final TextEditingController _pdfUrlController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.amber,
+          title: const Text("Add New Book",style: TextStyle(color: Colors.white),),
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      labelText: "Title",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a title";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _authorController,
+                    decoration: const InputDecoration(
+                      labelText: "Author",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter an author";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _imageUrlController,
+                    decoration: const InputDecoration(
+                      labelText: "Image URL",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter an image URL";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _pdfUrlController,
+                    decoration: const InputDecoration(
+                      labelText: "PDF URL",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a PDF URL";
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(foregroundColor: Colors.red),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Row(
+                    children: [
+                      Text("Cancel"),
+                      SizedBox(width: 5),
+                      Icon(Icons.cancel),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(foregroundColor: Colors.green),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final newBook = {
+                        "title": _titleController.text.trim(),
+                        "author": _authorController.text.trim(),
+                        "image": _imageUrlController.text.trim(),
+                        "pdf": _pdfUrlController.text.trim(),
+                        "likes": 0,
+                        "views": 0,
+                        "downloads": 0,
+                        "createdAt": DateTime.now().toString(),
+                        "createdBy": currentUser?.uid ?? "Anonymous",
+                      };
+
+                      try {
+                        await _firestore.collection('books').add(newBook);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Book added successfully!")),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Error adding book: $e")),
+                        );
+                      }
+                    }
+                  },
+                  child: const Row(
+                    children: [
+                      Text("Save"),
+                      SizedBox(width: 5),
+                      Icon(Icons.save),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

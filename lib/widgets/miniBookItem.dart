@@ -37,9 +37,10 @@ Widget miniBuildBookItem(BuildContext context, String imagePath, String bookName
           children: [
             Stack(
               children: [
-                Image.asset(
+                Image.network(
                   imagePath,
                   height: 100,
+                  width: 180,
                   fit: BoxFit.cover,
                 ),
                 Positioned(

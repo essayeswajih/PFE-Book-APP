@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../pages/singleBookPage.dart';
 
-Widget buildBookItem(BuildContext context,String imagePath, String bookName, String pdfUrl) {
+Widget buildBookItem(BuildContext context, String imagePath, String bookName, String pdfUrl) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 20.0),
     child: TextButton(
@@ -12,15 +11,19 @@ Widget buildBookItem(BuildContext context,String imagePath, String bookName, Str
       ),
       onPressed: () {
         // Navigate to the single book page
-        Navigator.push( context, MaterialPageRoute(builder: (context) => const singleBookPage(
-          bookName: bookName,
-          pdfUrl: pdfUrl,
-        )));
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => singleBookPage(
+              bookName: bookName,
+              pdfUrl: pdfUrl,
+            ),
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.amberAccent,  // Move the color here into BoxDecoration
+          color: Colors.amberAccent, // Move the color here into BoxDecoration
           borderRadius: BorderRadius.circular(10.0),
           boxShadow: const [
             BoxShadow(
@@ -34,10 +37,13 @@ Widget buildBookItem(BuildContext context,String imagePath, String bookName, Str
           children: [
             Stack(
               children: [
-                Image.asset(
+                Image.network(
                   imagePath, // Added height for the image for consistency
-                  fit: BoxFit.cover,  // Ensures the image covers the container properly
+                  fit: BoxFit.cover, // Ensures the image covers the container properly
+                  height: 200,
+                  width: double.infinity,
                 ),
+
                 Positioned(
                   top: 4,
                   right: 4,
@@ -66,7 +72,7 @@ Widget buildBookItem(BuildContext context,String imagePath, String bookName, Str
               padding: const EdgeInsets.all(5.0),
               child: Text(
                 bookName,
-                style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
           ],
