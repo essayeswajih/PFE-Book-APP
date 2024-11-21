@@ -1,7 +1,21 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:pfe_book/api/book.dart';
 import '../pages/singleBookPage.dart';
 
-Widget miniBuildBookItem(BuildContext context, String imagePath, String bookName, String pdfUrl) {
+Widget miniBuildBookItem(
+    BuildContext context,
+    String imagePath,
+    String bookName,
+    String pdfUrl,
+    String bookId,
+    String creatorId,
+    String userId,
+    String createdAt,
+    int views,
+    BookApi bookApi
+    ) {
   return Padding(
     padding: const EdgeInsets.only(right: 20.0),
     child: TextButton(
@@ -17,6 +31,8 @@ Widget miniBuildBookItem(BuildContext context, String imagePath, String bookName
             builder: (context) => singleBookPage(
               bookName: bookName,  // Pass the dynamic bookName
               pdfUrl: pdfUrl,      // Pass the dynamic pdfUrl
+              bookId: bookId,
+              bookApi: bookApi,
             ),
           ),
         );
@@ -44,24 +60,32 @@ Widget miniBuildBookItem(BuildContext context, String imagePath, String bookName
                   fit: BoxFit.cover,
                 ),
                 Positioned(
-                  top: 4,
-                  right: 4,
+                  top: 8,
+                  right: 8,
                   child: Container(
-                    width: 20,
-                    height: 20,
-                    decoration: const BoxDecoration(
-                      color: Colors.amber,
-                      shape: BoxShape.circle,
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.withOpacity(0.7), // Semi-transparent background
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Center(
-                      child: Text(
-                        '1',
-                        style: TextStyle(
+                    child:  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.remove_red_eye,
                           color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                          size: 14, // Adjusted size for a more subtle appearance
                         ),
-                      ),
+                        const SizedBox(width: 4), // Added spacing between the icon and text
+                        Text(
+                          views.toString(), // Replace '1' with a dynamic view count if needed
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

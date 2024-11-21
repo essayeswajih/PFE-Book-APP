@@ -63,4 +63,13 @@ class BookApi {
       print("Error deleting book: $e");
     }
   }
+  //view increment
+  Future<void> viewIncrement(String bookId) async {
+    try {
+      await FirebaseFirestore.instance.collection('books').doc(bookId).update({'views': FieldValue.increment(1)});
+      print("Book updated successfully!");
+    } catch (e) {
+      print("Error updating book: $e");
+    }
+  }
 }

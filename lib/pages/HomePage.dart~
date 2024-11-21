@@ -17,6 +17,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final User? currentUser = FirebaseAuth.instance.currentUser;
+
   late BookApi bookApi;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
@@ -136,7 +138,7 @@ class _HomepageState extends State<Homepage> {
   Future<List<Map<String, dynamic>>> _fetchBooks() async {
     try {
       // Assuming the API is adding books to Firestore
-      await bookApi.addAllBooks();
+      //await bookApi.addAllBooks();
 
       // Fetch books from Firestore
       final snapshot = await _firestore.collection('books').get();
@@ -228,7 +230,18 @@ class _HomepageState extends State<Homepage> {
         itemCount: books.length,
         itemBuilder: (context, index) {
           final book = books[index];
-          return miniBuildBookItem(context, book["image"] ?? "", book["title"] ?? "", book["pdf"] ?? "");
+          print(book);
+          return miniBuildBookItem(
+            context, book["image"] ?? "",
+            book["title"] ?? "",
+            book["pdf"] ?? "",
+            book["id"] ?? "",
+            book["createdBy"] ?? "",
+            currentUser!.uid ?? "",
+            book["createdAt"].toString() ?? "",
+            book["views"] ?? 0,
+            bookApi
+          );
         },
       ),
     );
@@ -260,7 +273,7 @@ class _HomepageState extends State<Homepage> {
               itemCount: books.length,
               itemBuilder: (context, index) {
                 final book = books[index];
-                return buildBookItem(context, book["image"] ?? "", book["title"] ?? "", book["pdf"] ?? "");
+                return buildBookItem(context, book["image"] ?? "", book["title"] ?? "", book["pdf"] ?? "",book["id"],bookApi);
               },
             ),
           ],
@@ -362,6 +375,11 @@ class _HomepageState extends State<Homepage> {
                   style: TextButton.styleFrom(foregroundColor: Colors.green),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      // Generate a new document reference to get the ID
+                      final docRef = _firestore.collection('books').doc();
+                      final newBookId = docRef.id;
+
+                      // Define the book data including the generated ID
                       final newBook = {
                         "title": _titleController.text.trim(),
                         "author": _authorController.text.trim(),
@@ -372,11 +390,12 @@ class _HomepageState extends State<Homepage> {
                         "downloads": 0,
                         "createdAt": DateTime.now().toString(),
                         "createdBy": currentUser?.uid ?? "Anonymous",
-                        https://i.imgur.com/6c7VTUd.pngh
+                        "id": newBookId, // Add the document ID as an attribute
                       };
 
                       try {
-                        await _firestore.collection('books').add(newBook);
+                        // Save the document to Firestore
+                        await docRef.set(newBook);
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Book added successfully!")),
