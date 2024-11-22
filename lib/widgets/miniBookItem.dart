@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:pfe_book/api/book.dart';
@@ -20,8 +19,8 @@ Widget miniBuildBookItem(
     padding: const EdgeInsets.only(right: 20.0),
     child: TextButton(
       style: ButtonStyle(
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-        padding: MaterialStateProperty.all(EdgeInsets.zero),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
       onPressed: () {
         // Remove 'const' here as you're passing dynamic parameters

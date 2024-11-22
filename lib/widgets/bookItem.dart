@@ -18,8 +18,8 @@ Widget buildBookItem(    BuildContext context,
     padding: const EdgeInsets.only(bottom: 20.0),
     child: TextButton(
       style: ButtonStyle(
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
-        padding: MaterialStateProperty.all(EdgeInsets.zero),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
       onPressed: () {
         // Navigate to the single book page

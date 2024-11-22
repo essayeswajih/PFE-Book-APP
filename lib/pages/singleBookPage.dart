@@ -21,7 +21,28 @@ class singleBookPage extends StatelessWidget {
           style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ), // Display book name in the app bar
       ),
-      body: PdfViewer(url: pdfUrl), // Pass the pdfUrl to PdfViewer
+      body:Stack(
+        children: [
+          Positioned(child: PdfViewer(url: pdfUrl)),
+          Container(
+            height: 50,
+            decoration: const BoxDecoration(
+                color: Colors.amberAccent
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye, color: Colors.black87),),
+                IconButton(onPressed: null, icon: Icon(Icons.download, color: Colors.black87),),
+                IconButton(onPressed: null, icon: Icon(Icons.edit, color: Colors.black87),),
+                IconButton(onPressed: null, icon: Icon(Icons.remove, color: Colors.black87),),
+              ],
+            ),
+          )
+        ],
+      )
+      
+      , // Pass the pdfUrl to PdfViewer
     );
   }
 }

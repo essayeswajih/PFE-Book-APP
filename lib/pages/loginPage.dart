@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Homepage(title: 'PFE Books')),
+          MaterialPageRoute(builder: (context) => const Homepage(title: 'PFE Books')),
         );
       });
     }
@@ -55,10 +55,10 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Homepage(title: 'PFE Books')),
+          MaterialPageRoute(builder: (context) => const Homepage(title: 'PFE Books')),
         );
       });
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       String message = 'Email or password is incorrect';
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

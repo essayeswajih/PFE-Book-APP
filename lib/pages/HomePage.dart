@@ -9,7 +9,7 @@ import 'loginPage.dart'; // Assuming you have a LoginPage
 
 class Homepage extends StatefulWidget {
   final String title;
-  Homepage({super.key, required this.title});
+  const Homepage({super.key, required this.title});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -293,11 +293,11 @@ class _HomepageState extends State<Homepage> {
   }
   void _showAddBookDialog() {
     final User? currentUser = FirebaseAuth.instance.currentUser;
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _titleController = TextEditingController();
-    final TextEditingController _authorController = TextEditingController();
-    final TextEditingController _imageUrlController = TextEditingController();
-    final TextEditingController _pdfUrlController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController authorController = TextEditingController();
+    final TextEditingController imageUrlController = TextEditingController();
+    final TextEditingController pdfUrlController = TextEditingController();
 
     showDialog(
       context: context,
@@ -306,13 +306,13 @@ class _HomepageState extends State<Homepage> {
           backgroundColor: Colors.amber,
           title: const Text("Add New Book",style: TextStyle(color: Colors.white),),
           content: Form(
-            key: _formKey,
+            key: formKey,
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
-                    controller: _titleController,
+                    controller: titleController,
                     decoration: const InputDecoration(
                       labelText: "Title",
                     ),
@@ -325,7 +325,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
-                    controller: _authorController,
+                    controller: authorController,
                     decoration: const InputDecoration(
                       labelText: "Author",
                     ),
@@ -338,7 +338,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
-                    controller: _imageUrlController,
+                    controller: imageUrlController,
                     decoration: const InputDecoration(
                       labelText: "Image URL",
                     ),
@@ -351,7 +351,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
-                    controller: _pdfUrlController,
+                    controller: pdfUrlController,
                     decoration: const InputDecoration(
                       labelText: "PDF URL",
                     ),
@@ -384,17 +384,17 @@ class _HomepageState extends State<Homepage> {
                 TextButton(
                   style: TextButton.styleFrom(foregroundColor: Colors.green),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       // Generate a new document reference to get the ID
                       final docRef = _firestore.collection('books').doc();
                       final newBookId = docRef.id;
 
                       // Define the book data including the generated ID
                       final newBook = {
-                        "title": _titleController.text.trim(),
-                        "author": _authorController.text.trim(),
-                        "image": _imageUrlController.text.trim(),
-                        "pdf": _pdfUrlController.text.trim(),
+                        "title": titleController.text.trim(),
+                        "author": authorController.text.trim(),
+                        "image": imageUrlController.text.trim(),
+                        "pdf": pdfUrlController.text.trim(),
                         "likes": 0,
                         "views": 0,
                         "downloads": 0,
