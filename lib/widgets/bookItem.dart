@@ -27,7 +27,7 @@ Widget buildBookItem(    BuildContext context,
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => singleBookPage(
+            builder: (context) => SingleBookPage(
               bookName: bookName,
               pdfUrl: pdfUrl,
               bookId: bookId,

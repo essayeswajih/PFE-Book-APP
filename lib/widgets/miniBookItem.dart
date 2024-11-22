@@ -27,7 +27,7 @@ Widget miniBuildBookItem(
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => singleBookPage(
+            builder: (context) => SingleBookPage(
               bookName: bookName,  // Pass the dynamic bookName
               pdfUrl: pdfUrl,      // Pass the dynamic pdfUrl
               bookId: bookId,
