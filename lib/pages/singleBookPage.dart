@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+//import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:pfe_book/api/book.dart';
 import 'package:pfe_book/pages/pdfViewr.dart';
 
@@ -44,14 +44,14 @@ class SingleBookPage extends StatelessWidget {
           PdfViewer(url: pdfUrl),
 
           // Add a bottom action bar for buttons
-          Align(
+          /*Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 50,
               decoration: const BoxDecoration(
                 color: Colors.amber,
               ),
-              /*child: Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // Eye icon (view count)
@@ -80,15 +80,15 @@ class SingleBookPage extends StatelessWidget {
                     icon: Icon(Icons.remove, color: Colors.black87),
                   ),
                 ],
-              ),*/
+              ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
   }
 
-  Future<void> downloadBook(BuildContext context, String pdfUrl, {String? customFileName}) async {
+  /*Future<void> downloadBook(BuildContext context, String pdfUrl, {String? customFileName}) async {
     try {
       // Validate the URL
       if (!Uri.parse(pdfUrl).isAbsolute) {
@@ -177,5 +177,5 @@ class SingleBookPage extends StatelessWidget {
         textColor: Colors.white,
       );
     }
-  }
+  }*/
 }
