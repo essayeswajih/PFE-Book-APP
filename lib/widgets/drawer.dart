@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pfe_book/pages/constructionPage.dart';
 import 'package:pfe_book/pages/loginPage.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -19,7 +20,8 @@ class MyDrawer extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 40, // Adjust size as needed
-                  backgroundImage: AssetImage('assets/images/YXUjAZj.png'),
+                  backgroundImage: AssetImage('assets/images/logo2.png'),
+                  backgroundColor: Colors.amber,
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -48,7 +50,7 @@ class MyDrawer extends StatelessWidget {
                   icon: Icons.dashboard,
                   text: 'Dashboard',
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const constructionPage()));
                   },
                 ),
                 const Divider(),
@@ -56,21 +58,21 @@ class MyDrawer extends StatelessWidget {
                   icon: Icons.favorite,
                   text: 'Favorites',
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const constructionPage()));
                   },
                 ),
                 _buildDrawerItem(
                   icon: Icons.history,
                   text: 'History',
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const constructionPage()));
                   },
                 ),
                 _buildDrawerItem(
                   icon: Icons.settings,
                   text: 'Settings',
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const constructionPage()));
                   },
                 ),
                 const Divider(),
@@ -78,14 +80,14 @@ class MyDrawer extends StatelessWidget {
                   icon: Icons.help,
                   text: 'Help & Support',
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const constructionPage()));
                   },
                 ),
                 _buildDrawerItem(
                   icon: Icons.info,
                   text: 'About',
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const constructionPage()));
                   },
                 ),
                 const Divider(),

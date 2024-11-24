@@ -86,7 +86,8 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(
               height: 30,
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/YXUjAZj.png'),
+                backgroundImage: AssetImage('assets/images/logo2.png'),
+                backgroundColor: Colors.amber,
               ),
             )
           ],
