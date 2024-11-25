@@ -16,7 +16,9 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  // Initialize Firestore
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // Get the current user
   final User? currentUser = FirebaseAuth.instance.currentUser;
 
   late BookApi bookApi;
