@@ -20,10 +20,34 @@ class BookApi {
     // Define the books JSON array
     final List<Map<String, dynamic>> books = [
       {
-        "title": "STMicroelectronics",
-        "author": "STMicroelectronics",
-        "image": "https://drive.google.com/uc?export=download&id=1HEejKlrx70ncUB5Ew4-KUuyVeMs_1Sc2",
-        "pdf": "https://drive.google.com/uc?export=download&id=1ezTGd1UcdoExx2IBsHikaQP-ovEM6uZX",
+        "title": "OliveSoft",
+        "author": "OliveSoft",
+        "image": "https://drive.google.com/uc?export=download&id=1U8dgDYz6bLnvC-bEp6pdXfsIAVk2K1D3",
+        "pdf": "https://drive.google.com/uc?export=download&id=1_Kf8WS3tt1-RSGS9rqX8CfTAfONwh550",
+        "likes": 0,
+        "views": 0,
+        "downloads": 0,
+        "createdAt": "DateTime.now().toString()",
+        "createdBy": "currentUser?.uid ?? Anonymous",
+        "id": "newBookId"
+      },
+      {
+        "title": "CED",
+        "author": "CED",
+        "image": "https://drive.google.com/uc?export=download&id=1nGT6KgBJ4cC5mMcNVwaLmcixA0RuHxvy",
+        "pdf": "https://drive.google.com/drive/folders/19bM_1YYnWUxyhPodUPAucCfdkJrENt5G",
+        "likes": 0,
+        "views": 0,
+        "downloads": 0,
+        "createdAt": "DateTime.now().toString()",
+        "createdBy": "currentUser?.uid ?? Anonymous",
+        "id": "newBookId"
+      },
+      {
+        "title": "PIVA SOFTWARE",
+        "author": "PIVA SOFTWARE",
+        "image": "https://drive.google.com/uc?export=download&id=1OE56COv5_UyqRPPh-xnkfI5cKH3cLUHG",
+        "pdf": "https://drive.google.com/drive/folders/19bM_1YYnWUxyhPodUPAucCfdkJrENt5G",
         "likes": 0,
         "views": 0,
         "downloads": 0,
