@@ -1,101 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:http/http.dart' as http;
-import 'dart:typed_data';
+import 'package:advance_pdf_viewer2/advance_pdf_viewer.dart';
 
-class PdfViewer extends StatefulWidget {
-  final String url;  // URL of the PDF
+void main() => runApp(MaterialApp(
+  home: MyApp(),
+));
 
-  const PdfViewer({super.key, required this.url});
-
+class MyApp extends StatefulWidget {
   @override
-  _PdfViewerState createState() => _PdfViewerState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _PdfViewerState extends State<PdfViewer> {
-  late Uint8List _pdfData;  // To hold the PDF data
-  bool _loading = true;      // Loading flag
-  double _progress = 0.0;    // Progress bar value (0.0 - 1.0)
+class _MyAppState extends State<MyApp> {
+  bool _isLoading = true;
+  late PDFDocument document;
 
   @override
   void initState() {
     super.initState();
-    _fetchPdf();
+    loadDocument();
   }
 
-  // Fetch PDF data from the URL with progress tracking
-  Future<void> _fetchPdf() async {
-    final request = http.Request('GET', Uri.parse(widget.url));
-    final response = await request.send();
+  // Function to load initial document
+  loadDocument() async {
+    document = await PDFDocument.fromAsset('assets/sample.pdf');
+    setState(() => _isLoading = false);
+  }
 
-    final bytes = <int>[];
-    int bytesReceived = 0;
-
-    // Get the content length from the response (can be null or 0)
-    final contentLength = response.contentLength ?? 0;
-
-    response.stream.listen(
-          (List<int> chunk) {
-        bytes.addAll(chunk);
-        bytesReceived += chunk.length;
-
-        // Update the progress only if contentLength is greater than 0
-        if (contentLength > 0) {
-          setState(() {
-            _progress = bytesReceived / contentLength;
-          });
-        }
-      },
-      onDone: () {
-        setState(() {
-          _pdfData = Uint8List.fromList(bytes);
-          _loading = false;  // PDF loaded successfully
-        });
-      },
-      onError: (error) {
-        print("Failed to load PDF: $error");
-      },
-    );
+  // Function to change PDF based on value (Asset, URL or Default)
+  changePDF(int value) async {
+    setState(() => _isLoading = true);
+    if (value == 1) {
+      document = await PDFDocument.fromAsset('assets/sample2.pdf');
+    } else if (value == 2) {
+      document = await PDFDocument.fromURL(
+        "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf",
+      );
+    } else {
+      document = await PDFDocument.fromAsset('assets/sample.pdf');
+    }
+    setState(() => _isLoading = false);
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _loading
-          ? SingleChildScrollView(  // Make the Column scrollable if needed
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //const SizedBox(height: 350),
-              const CircularProgressIndicator(
-                color: Colors.amber,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                '${(_progress * 100).toStringAsFixed(2)}%', // Display percentage
-                style: const TextStyle(fontSize: 20, color: Colors.amber),
-              ),
-              const SizedBox(height: 20),
-              LinearProgressIndicator(
-                value: _progress, // Set progress bar value
-                backgroundColor: Colors.amber.withOpacity(0.3), // Background with transparency
-                color: Colors.amberAccent,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
-              ),
-            ],
-          ),
+      drawer: Drawer(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 36),
+            ListTile(
+              title: Text('Load from Assets'),
+              onTap: () {
+                changePDF(1);
+              },
+            ),
+            ListTile(
+              title: Text('Load from URL'),
+              onTap: () {
+                changePDF(2);
+              },
+            ),
+            ListTile(
+              title: Text('Restore Default'),
+              onTap: () {
+                changePDF(3);
+              },
+            ),
+          ],
         ),
-      )
-          : PDFView(
-        pdfData: _pdfData,  // Provide PDF data to the PDF viewer
-        enableSwipe: true,
-        swipeHorizontal: true,
-        autoSpacing: true,
-        pageFling: true,
-        pageSnap: true,
+      ),
+      appBar: AppBar(
+        title: const Text('Flutter Plugin PDF Viewer'),
+      ),
+      body: Center(
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : PDFViewer(
+          document: document,
+          zoomSteps: 1, // Control zoom steps (1x)
+          // Uncomment below line to preload all pages
+          // lazyLoad: false,
+          // Uncomment below line to scroll vertically
+          // scrollDirection: Axis.vertical,
+
+          // Uncomment below code to customize navigation
+          /* navigationBuilder: (context, page, totalPages, jumpToPage, animateToPage) {
+                  return ButtonBar(
+                    alignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.first_page),
+                        onPressed: () {
+                          jumpToPage(0);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          animateToPage(page - 2);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          animateToPage(page);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.last_page),
+                        onPressed: () {
+                          jumpToPage(totalPages - 1);
+                        },
+                      ),
+                    ],
+                  );
+                }, */
+        ),
       ),
     );
   }
