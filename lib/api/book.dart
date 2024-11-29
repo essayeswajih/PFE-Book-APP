@@ -20,34 +20,10 @@ class BookApi {
     // Define the books JSON array
     final List<Map<String, dynamic>> books = [
       {
-        "title": "OliveSoft",
-        "author": "OliveSoft",
-        "image": "https://drive.google.com/uc?export=download&id=1U8dgDYz6bLnvC-bEp6pdXfsIAVk2K1D3",
-        "pdf": "https://drive.google.com/uc?export=download&id=1_Kf8WS3tt1-RSGS9rqX8CfTAfONwh550",
-        "likes": 0,
-        "views": 0,
-        "downloads": 0,
-        "createdAt": "DateTime.now().toString()",
-        "createdBy": "currentUser?.uid ?? Anonymous",
-        "id": "newBookId"
-      },
-      {
-        "title": "CED",
-        "author": "CED",
-        "image": "https://drive.google.com/uc?export=download&id=1nGT6KgBJ4cC5mMcNVwaLmcixA0RuHxvy",
-        "pdf": "https://drive.google.com/drive/folders/19bM_1YYnWUxyhPodUPAucCfdkJrENt5G",
-        "likes": 0,
-        "views": 0,
-        "downloads": 0,
-        "createdAt": "DateTime.now().toString()",
-        "createdBy": "currentUser?.uid ?? Anonymous",
-        "id": "newBookId"
-      },
-      {
-        "title": "PIVA SOFTWARE",
-        "author": "PIVA SOFTWARE",
-        "image": "https://drive.google.com/uc?export=download&id=1OE56COv5_UyqRPPh-xnkfI5cKH3cLUHG",
-        "pdf": "https://drive.google.com/drive/folders/19bM_1YYnWUxyhPodUPAucCfdkJrENt5G",
+        "title": "SECURAS",
+        "author": "SECURAS",
+        "image": "https://drive.google.com/uc?export=download&id=12dMd9ETnEbfPb66J1VU6TsXwv3EWfDDx",
+        "pdf": "https://drive.google.com/uc?export=download&id=18JZBVExPvi2snFq9OOjbxclmQAo1HG6M",
         "likes": 0,
         "views": 0,
         "downloads": 0,
