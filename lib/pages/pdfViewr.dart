@@ -61,41 +61,62 @@ class _PdfViewerState extends State<PdfViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _loading
-          ? SingleChildScrollView(  // Make the Column scrollable if needed
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 300),
-              const CircularProgressIndicator(
-                color: Colors.amber,
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          if (_loading) {
+            // Progress Indicator layout
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(
+                      color: Colors.amber,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '${(_progress * 100).toStringAsFixed(2)}%', // Display percentage
+                      style: const TextStyle(fontSize: 20, color: Colors.amber),
+                    ),
+                    const SizedBox(height: 20),
+                    LinearProgressIndicator(
+                      value: _progress, // Set progress bar value
+                      backgroundColor: Colors.amber.withOpacity(0.3),
+                      color: Colors.amberAccent,
+                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              Text(
-                '${(_progress * 100).toStringAsFixed(2)}%', // Display percentage
-                style: const TextStyle(fontSize: 20, color: Colors.amber),
-              ),
-              const SizedBox(height: 20),
-              LinearProgressIndicator(
-                value: _progress, // Set progress bar value
-                backgroundColor: Colors.amber.withOpacity(0.3), // Background with transparency
-                color: Colors.amberAccent,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
-              ),
-            ],
-          ),
-        ),
-      )
-          : PDFView(
-        pdfData: _pdfData,  // Provide PDF data to the PDF viewer
-        enableSwipe: true,
-        swipeHorizontal: true,
-        autoSpacing: true,
-        pageFling: true,
-        pageSnap: true,
+            );
+          } else {
+            // Responsive PDF Viewer layout
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                double availableHeight = constraints.maxHeight;
+                double availableWidth = constraints.maxWidth;
+
+                return Center(
+                  child: SizedBox(
+                    height: availableHeight,
+                    width: availableWidth,
+                    child: PDFView(
+                      pdfData: _pdfData,
+                      enableSwipe: true,
+                      swipeHorizontal: orientation == Orientation.landscape,
+                      autoSpacing: true,
+                      pageFling: true,
+                      pageSnap: true,
+                      fitPolicy: FitPolicy.BOTH, // Ensures scaling for width and height
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }
