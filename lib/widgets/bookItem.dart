@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../api/book.dart';
 import '../pages/singleBookPage.dart';
+import '../calcul/calcul.dart';
 
 Widget buildBookItem(    BuildContext context,
     String imagePath,
@@ -13,6 +14,8 @@ Widget buildBookItem(    BuildContext context,
     int views,
     BookApi bookApi
     ) {
+
+
 
   return Padding(
     padding: const EdgeInsets.only(bottom: 20.0),
@@ -82,6 +85,36 @@ Widget buildBookItem(    BuildContext context,
                           const SizedBox(width: 4), // Added spacing between the icon and text
                           Text(
                             views.toString(), // Replace '1' with a dynamic view count if needed
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    left: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.withOpacity(0.7), // Semi-transparent background
+                        borderRadius: const BorderRadius.horizontal(right: Radius.circular(20), left: Radius.circular(0)), // Adjusted border radius(20),
+                      ),
+                      child:  Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.access_time_filled,
+                            color: Colors.white,
+                            size: 14, // Adjusted size for a more subtle appearance
+                          ),
+                          const SizedBox(width: 4), // Added spacing between the icon and text
+                          Text(
+                            Calc().formatYearRange(createdAt),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

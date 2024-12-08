@@ -73,7 +73,10 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               widget.title,
@@ -128,7 +131,7 @@ class _HomepageState extends State<Homepage> {
       drawer: const MyDrawer(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.amber,
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add,color: Colors.white,),
         onPressed: () {
           // Add a new book
           _showAddBookDialog();

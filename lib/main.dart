@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'PFE PFA Book',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.amber,primary: Colors.white,secondary: Colors.amber,),
         useMaterial3: true,
       ),
       //home: const Homepage(title: 'PFE Books'),
