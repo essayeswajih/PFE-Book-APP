@@ -8,8 +8,6 @@ import '../widgets/bookItem.dart';
 import 'loginPage.dart'; // Assuming you have a LoginPage
 
 class Homepage extends StatefulWidget {
-  final String title;
-  const Homepage({super.key, required this.title});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -74,29 +72,30 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         backgroundColor: Colors.amber,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.title,
-              style: const TextStyle(
+              'PFE PFA Book',
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
               ),
             ),
-            const Spacer(),
-            const SizedBox(
-              height: 30,
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/logo2.png'),
-                backgroundColor: Colors.amber,
-              ),
-            )
           ],
         ),
+        actions: const [
+          SizedBox(
+            height: 30,
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/images/logo2.png'),
+              backgroundColor: Colors.amber,
+            ),
+          )
+        ],
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _fetchBooks(),

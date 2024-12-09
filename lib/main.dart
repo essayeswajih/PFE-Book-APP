@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pfe_book/pages/loginPage.dart';
+import 'package:pfe_book/pages/registerPage.dart';
 
 void main()async {
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       home: const LoginPage(),
       routes: {
         '/login': (context) => const LoginPage(),
-        '/register': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPage(),
       },
     );
   }

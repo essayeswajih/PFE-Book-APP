@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Homepage(title: 'PFE Books')),
+          MaterialPageRoute(builder: (context) => Homepage()),
         );
       });
     }
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Homepage(title: 'PFE Books')),
+          MaterialPageRoute(builder: (context) => Homepage()),
         );
       });
     } on FirebaseAuthException {

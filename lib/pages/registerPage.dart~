@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       await authService.signUp(nameController.text,emailController.text, passwordController.text);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Successfully signed up."),backgroundColor: Colors.amber,));
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage())); // Navigate back to Home page
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const Homepage(title: 'PFE Books'))); // Navigate back to Home page
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("An error occurred while signing up."),backgroundColor: Colors.amber,));
