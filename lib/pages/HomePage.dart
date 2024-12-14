@@ -29,7 +29,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
     bookApi = BookApi();
     _searchController.addListener(_onSearchChanged);
-    bookApi.addAllBooks();
+    //bookApi.addAllBooks();
     // Listen for changes in authentication state
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
@@ -403,7 +403,7 @@ class _HomepageState extends State<Homepage> {
                         "likes": 0,
                         "views": 0,
                         "downloads": 0,
-                        "createdAt": DateTime.now().toString(),
+                        "createdAt": Timestamp.now(),
                         "createdBy": currentUser?.uid ?? "Anonymous",
                         "id": newBookId, // Add the document ID as an attribute
                       };
