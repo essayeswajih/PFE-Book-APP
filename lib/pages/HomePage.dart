@@ -29,7 +29,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
     bookApi = BookApi();
     _searchController.addListener(_onSearchChanged);
-    //bookApi.addAllBooks();
+    bookApi.addAllBooks();
     // Listen for changes in authentication state
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
